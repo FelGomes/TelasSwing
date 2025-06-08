@@ -93,23 +93,31 @@ public class Usuario {
         janela.add(campoData);
         
         
-        JButton botaoSalvar = new JButton("SALVAR");
+        JButton botaoSalvar = new JButton("SAVE");
         botaoSalvar.setBounds(310, 170, 80, 25);
         botaoSalvar.setBackground(Color.GREEN);
         janela.add(botaoSalvar);
         
-        JButton botaoCancelar = new JButton("CANCELAR");
+        JButton botaoCancelar = new JButton("CANCEL");
         botaoCancelar.setBounds(400, 170, 100, 25);
-        botaoCancelar.setBackground(Color.RED);
         janela.add(botaoCancelar);
         
+        JButton botaoAlterar = new JButton("ALTER");
+        botaoAlterar.setBounds(310, 205, 80, 25);
+        botaoAlterar.setEnabled(false);
+        janela.add(botaoAlterar);
+        
+        JButton botaoDeletar = new JButton("DEL");
+        botaoDeletar.setBounds(400, 205, 100, 25);
+        botaoDeletar.setEnabled(false);
+        janela.add(botaoDeletar);
         
         String[] colunas = new String[]{"Nome", "Sexo", "CPF", "Endereco", "Nascimento"};
         Object[][] dados = {};
         
         JTable tabela = new JTable(dados, colunas);
         JScrollPane scroll = new JScrollPane();
-        scroll.setBounds(30,220,500,150);
+        scroll.setBounds(30,250,500,150);
         scroll.setViewportView(tabela);
         janela.add(scroll);
         
