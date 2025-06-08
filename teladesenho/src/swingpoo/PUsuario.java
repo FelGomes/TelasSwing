@@ -123,4 +123,30 @@ public class PUsuario {
         return resultado;
     }
     
+    
+    public String excluirUsuario(String cpf) throws SQLException {
+        
+        String resultado;
+        
+        Connection conn = Conexao.obterConexaoMySQL();
+        
+        try { 
+            
+            String SQL = "DELETE from usuario where usuarios_cpf = ?";
+            try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                pstm.setString(1,cpf.toUpperCase());
+                pstm.executeUpdate();
+                
+            }
+            resultado = "Exclusao efetuada com sucesso!";
+        
+        } catch(SQLException e){
+            resultado = "Erro na exclusao: " + e.getMessage();
+        }
+        
+        Conexao.fecharConexao();
+        
+        return resultado;
+    }
+    
 }
