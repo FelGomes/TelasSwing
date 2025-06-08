@@ -17,7 +17,7 @@ import java.sql.PreparedStatement;
  */
 public class PUsuario {
     
-    public ArrayList<EUsuario> consultarPessoaNome(String nome) throws SQLException {
+    public ArrayList<EUsuario> consultarPessoaNome(String nome) {
         
         ArrayList<EUsuario> oListaPessoa = new ArrayList();
         
@@ -103,8 +103,9 @@ public class PUsuario {
         Connection conn = Conexao.obterConexaoMySQL();
         
         try{
-            String SQL = "Insert into usuarios values (?,?,?,?,?)";
-                try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {                pstm.setString(1, nome.toUpperCase());
+            String SQL = "Insert into usuarios (usuarios_nome, usuarios_sexo, usuarios_cpf, usuarios_endereco, usuarios_nascimento) values (?,?,?,?,?)";
+                try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {                
+                    pstm.setString(1, nome.toUpperCase());
                     pstm.setString(2, sexo.toUpperCase());
                     pstm.setString(3, cpf.toUpperCase());
                     pstm.setString(4, endereco.toUpperCase());
