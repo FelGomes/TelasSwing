@@ -17,7 +17,7 @@ import java.sql.PreparedStatement;
  */
 public class PUsuario {
     
-    public ArrayList<EUsuario> consultarPessoaNome(String nome) {
+    public ArrayList<EUsuario> consultarUsuarioNome(String nome) {
         
         ArrayList<EUsuario> oListaPessoa = new ArrayList();
         
@@ -59,7 +59,7 @@ public class PUsuario {
         return oListaPessoa;
     }
     
-    public ArrayList<EUsuario> consultarPessoa() throws SQLException {
+    public ArrayList<EUsuario> consultarUsuario() throws SQLException {
         
         ArrayList<EUsuario> oListaPessoa = new ArrayList();
         
@@ -76,7 +76,7 @@ public class PUsuario {
                     
                     EUsuario usuario = new EUsuario();
                     
-                    usuario.setNome(rset.getString("usuario_nome"));
+                    usuario.setNome(rset.getString("usuarios_nome"));
                     usuario.setSexo(rset.getString("usuarios_sexo"));
                     usuario.setCpf(rset.getString("usuarios_cpf"));
                     usuario.setEndereco(rset.getString("usuarios_endereco"));
@@ -133,7 +133,7 @@ public class PUsuario {
         
         try { 
             
-            String SQL = "DELETE from usuario where usuarios_cpf = ?";
+            String SQL = "DELETE from usuarios where usuarios_cpf = ?";
             try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
                 pstm.setString(1,cpf.toUpperCase());
                 pstm.executeUpdate();

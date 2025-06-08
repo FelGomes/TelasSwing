@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -20,8 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
-import static swingpoo.TelaInicial.mascara1;
-
+import java.sql.SQLException;
 /**
  *
  * @author felipe
@@ -123,12 +124,12 @@ public class Usuario {
         String[] colunas = new String[]{"Nome", "Sexo", "CPF", "Endereco", "Nascimento"};
         ArrayList<EUsuario> oListaUsuario = new ArrayList<>();
         PUsuario ppUsuarios = new PUsuario();
-       /* 
+       
         try {
             oListaUsuario = ppUsuarios.consultarPessoa();
         } catch(SQLException e1){
-            System.out.println(e1.getMessage());*/
-        //}
+            System.out.println(e1.getMessage());
+        }
         
         String linhas[][] = new String[oListaUsuario.size()][5];
         
@@ -201,58 +202,124 @@ public class Usuario {
          
          
          // arrumar essa sintaxe para aparecer na tela
-         /*
+         
          tabela.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                oJTextFieldCPF.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
-                oJTextFieldNome.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
-                oJTextFieldDataNasc.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
-                if (tabela.getValueAt(tabela.getSelectedRow(), 3).toString().trim().equalsIgnoreCase("Masculino")) {
-                    oJComboBox.setSelectedIndex(1);
-                } else {
-                    oJComboBox.setSelectedIndex(2);
-                }
+                campoUsuario.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString()); // Nome
+                ojComboBox.setSelectedItem(tabela.getValueAt(tabela.getSelectedRow(), 1).toString()); // Sexo
+                campoCPF.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString()); // CPF
+                campoEndereco.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString()); // Endereço
+                campoData.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString()); // Nascimento
 
-                oJButtonAlterar.setEnabled(true);
-                oJButtonExcluir.setEnabled(true);
 
-                oJButtonExcluir.addMouseListener(new MouseAdapter() {
+                botaoAlterar.setEnabled(true);
+                botaoDeletar.setEnabled(true);
+
+                botaoDeletar.addMouseListener(new MouseAdapter() {
 
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         
-                        PPessoa oPPessoa = new PPessoa();
+                        PUsuario usuario = new PUsuario();
 
                         try {
-                            if (!oJTextFieldCPF.getText().equalsIgnoreCase("") && oJTextFieldCPF.getText() != null) {
-                                String exclusao = oPPessoa.excluirPessoa(oJTextFieldCPF.getText());
+                            if (!campoCPF.getText().equalsIgnoreCase("") && campoCPF.getText() != null) {
+                                String exclusao = usuario.excluirUsuario(campoCPF.getText());
                                 JOptionPane.showMessageDialog(null, exclusao);
-                                oJFrame.dispose();
-                                Tela.montarTela();
+                                janela.dispose();
+                                Usuario.montarTelaUsuario();
+                                
 
                             } else {
                                 JOptionPane.showMessageDialog(null, "Selecione uma pessoa!");
                                 
                             }
 
-                        } catch (SQLException | IOException e1) {
+                        } catch (IOException e1) {
                             System.out.println(e1.getMessage());
+                        } catch (java.sql.SQLException ex) {
+                            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                     }
                 });
 
-        
-        */
-        
-        
-        
-        
+            }
+        });
         
         janela.setVisible(true);
+        
+        
+         botaoFiltrar.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                ArrayList<EUsuario> oListaPessoa = new ArrayList<>();
+                PUsuario usuario = new PUsuario();
+
+                try {
+                    oListaPessoa = usuario.consultarUsuarioNome(campoFiltro.getText().trim());
+                } catch (SQLException e1) {
+                   System.out.println(e1.getMessage());
+                }
+                String linhas[][] = new String[oListaPessoa.size()][4];
+
+                int i = 0;
+                for (EUsuario usurio : oListaPessoa) {
+
+                    linhas[i][0] = usurio.getNome();
+                    linhas[i][1] = usurio.getSexo();
+                    linhas[i][2] = usurio.getCpf();
+                    linhas[i][3] = usurio.getEndereco();
+                    linhas[i][4] = usurio.getDataNasc();
+                    i++;
+                }
+
+                janela.remove(scroll);
+
+                JTable tabela = new JTable(linhas, colunas);
+                JScrollPane scroll = new JScrollPane();
+                scroll.setBounds(20, 270, 510, 120);
+                scroll.setViewportView(tabela);
+                janela.add(scroll);
+
+            }
+        });
+
+        oJButtonGerarArquivo.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                ArrayList<EPessoa> oListaPessoa = new ArrayList<>();
+                PPessoa oPPessoa = new PPessoa();
+
+                try {
+                    oListaPessoa = oPPessoa.consultarPessoaPorNome(oJTextFieldFiltroNome.getText().trim());
+
+                    try {
+                        Arquivo.gerarArquivoTabela("/home/andre/Documentos/Gerado.txt", oListaPessoa);
+                        JOptionPane.showMessageDialog(null, "Arquivo gerado com sucesso!");
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        System.out.println(e1.getMessage());
+                    }
+
+                } catch (SQLException e1) {
+                    System.out.println(e1.getMessage());
+                }
+
+            }
+        });
+
+        
+        
+        
+        
         
     }
     
@@ -271,7 +338,7 @@ public class Usuario {
            
            return F_Mascara;
            
-       }  
+    }  
     
     public static MaskFormatter mascaraData(String mascara){
            
