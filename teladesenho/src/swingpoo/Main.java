@@ -14,7 +14,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        TelaInicial.montarTelaInicial();
+       // TelaInicial.montarTelaInicial();
+          Usuario.montarTelaUsuario();
         
     }
 

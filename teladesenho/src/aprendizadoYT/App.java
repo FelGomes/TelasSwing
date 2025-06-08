@@ -24,7 +24,7 @@ public class App {
         janela.setBounds(400,600,400,600);
         janela.setLayout(null);
         
-        //Button -> BOTAO
+        /*//Button -> BOTAO
         JButton botao = new JButton("Clique AQUI!");
         botao.setBounds(10, 10, 200, 30);
         
@@ -51,7 +51,7 @@ public class App {
         janela.setVisible(true);
         janela.add(botao);
         janela.add(LabelUsuario);
-        janela.add(campoUsuario);
+        janela.add(campoUsuario);*/
     }
     
 }
