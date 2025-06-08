@@ -149,4 +149,33 @@ public class PUsuario {
         return resultado;
     }
     
+      public String alterarUsuario(String nome, String sexo, String cpf, String endereco, String DataNasc) {
+
+        String resultado;
+
+        Connection conn = Conexao.obterConexaoMySQL();
+
+        try {
+
+            String SQL = "update usuarios set usuarios_nome = ?, usuarios_sexo = ?, usuarios_cpf = ?, usuarios_endereco = ?, usuarios_nascimento = ?";
+            try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+                pstm.setString(1, nome.toUpperCase());
+                pstm.setString(2, sexo.toUpperCase());
+                pstm.setString(3, cpf.toUpperCase());
+                pstm.setString(4, endereco.toUpperCase());
+                pstm.setString(5, DataNasc.toUpperCase());
+                pstm.executeUpdate();
+            }
+            resultado = "Alteraçao efetuada com sucesso!";
+        } catch (SQLException e) {
+            resultado = "Erro na alteraçao: " + e.getMessage();
+
+        }
+
+        Conexao.fecharConexao();
+
+        return resultado;
+    }
+    
 }
