@@ -236,8 +236,37 @@ public class Usuario {
 
             }
         });
+        
+        
+        botaoAlterar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                PUsuario usuario = new PUsuario();
+                
+                try {
+                    if(campoUsuario.getText().trim().equalsIgnoreCase("") || ojComboBox.getSelectedIndex() == 0 || campoCPF.getText().trim().equalsIgnoreCase("") || campoEndereco.getText().trim().equalsIgnoreCase("")
+                    ||campoData.getText().trim().equalsIgnoreCase("")){
+                        JOptionPane.showMessageDialog(null, "Preencha todos os dados!");
 
-        janela.setVisible(true);
+                        return;
+                    }
+                    
+                    if(!campoCPF.getText().equalsIgnoreCase("") && campoCPF.getText() != null){
+                        String alteracao = usuario.alterarUsuario(campoUsuario.getText(),ojComboBox.getSelectedItem().toString(), campoCPF.getText(), campoEndereco.getText(),campoEndereco.getText());
+                        JOptionPane.showMessageDialog(null, alteracao);
+                        janela.dispose();
+                        Usuario.montarTelaUsuario();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Selecione uma pessoa!");
+                        
+                    }
+                } catch (IOException e1){
+                    System.out.println(e1.getMessage());
+                }
+                
+            }
+        });
+       
 
         botaoFiltrar.addMouseListener(new MouseAdapter() {
 

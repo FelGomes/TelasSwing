@@ -47,13 +47,14 @@ public class PUsuario {
                 
             }
             
-            rset.close();
-            Conexao.fecharConexao();
+                rset.close();
             
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             
+        } finally {
+             Conexao.fecharConexao();
         }
         
         return oListaPessoa;
@@ -84,14 +85,16 @@ public class PUsuario {
                     
                     oListaPessoa.add(i++, usuario);
                     
-                }
+                } 
             } 
-            rset.close();
-            Conexao.fecharConexao();
+                rset.close();   
             
         } catch(SQLException e){
             System.out.println(e.getMessage());
             
+        } finally {
+            
+           Conexao.fecharConexao();
         }
         return oListaPessoa;
     }
@@ -151,7 +154,7 @@ public class PUsuario {
     }
     
     
-    //
+    //alterar 
       public String alterarUsuario(String nome, String sexo, String cpf, String endereco, String DataNasc) {
 
         String resultado;
@@ -160,7 +163,7 @@ public class PUsuario {
 
         try {
 
-            String SQL = "update usuarios set usuarios_nome = ?, usuarios_sexo = ?, usuarios_cpf = ?, usuarios_endereco = ?, usuarios_nascimento = ?";
+            String SQL = "update usuarios set usuarios_nome = ?, usuarios_sexo = ?, usuarios_cpf = ?, usuarios_endereco = ?, usuarios_nascimento = ? where usuarios_cpf = ?";
             try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
                 pstm.setString(1, nome.toUpperCase());
@@ -168,6 +171,7 @@ public class PUsuario {
                 pstm.setString(3, cpf.toUpperCase());
                 pstm.setString(4, endereco.toUpperCase());
                 pstm.setString(5, DataNasc.toUpperCase());
+                pstm.setString(6, cpf.toUpperCase());
                 pstm.executeUpdate();
             }
             resultado = "Alteraçao efetuada com sucesso!";
