@@ -58,7 +58,7 @@ public class PUsuario {
         
         return oListaPessoa;
     }
-    
+    //consultar
     public ArrayList<EUsuario> consultarUsuario() throws SQLException {
         
         ArrayList<EUsuario> oListaPessoa = new ArrayList();
@@ -95,7 +95,7 @@ public class PUsuario {
         }
         return oListaPessoa;
     }
-    
+    //inserir
     public String incluirUsuario(String nome, String sexo, String cpf, String endereco, String DataNasc){
         
         String resultado;
@@ -124,7 +124,7 @@ public class PUsuario {
         return resultado;
     }
     
-    
+    // canpo para excluir
     public String excluirUsuario(String cpf) throws SQLException {
         
         String resultado;
@@ -150,6 +150,8 @@ public class PUsuario {
         return resultado;
     }
     
+    
+    //
       public String alterarUsuario(String nome, String sexo, String cpf, String endereco, String DataNasc) {
 
         String resultado;

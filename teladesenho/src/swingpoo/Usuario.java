@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 import java.sql.SQLException;
+import java.sql.SQLException;
 /**
  *
  * @author felipe
@@ -100,7 +101,6 @@ public class Usuario {
         // botoes // 
         JButton botaoSalvar = new JButton("SAVE");
         botaoSalvar.setBounds(350, 170, 80, 25);
-        botaoSalvar.setBackground(Color.GREEN);
         janela.add(botaoSalvar);
         
         JButton botaoCancelar = new JButton("CANCEL");
@@ -121,12 +121,17 @@ public class Usuario {
         botaoFiltrar.setBounds(350, 240, 80, 25);
         janela.add(botaoFiltrar);
         
+        
+        JButton botaoArquivo = new JButton("GER.ARQ");
+        botaoArquivo.setBounds(450, 240, 100, 25);
+        janela.add(botaoArquivo);
+        
         String[] colunas = new String[]{"Nome", "Sexo", "CPF", "Endereco", "Nascimento"};
         ArrayList<EUsuario> oListaUsuario = new ArrayList<>();
         PUsuario ppUsuarios = new PUsuario();
        
         try {
-            oListaUsuario = ppUsuarios.consultarPessoa();
+            oListaUsuario = ppUsuarios.consultarUsuario();
         } catch(SQLException e1){
             System.out.println(e1.getMessage());
         }
@@ -261,12 +266,10 @@ public class Usuario {
                 ArrayList<EUsuario> oListaPessoa = new ArrayList<>();
                 PUsuario usuario = new PUsuario();
 
-                try {
-                    oListaPessoa = usuario.consultarUsuarioNome(campoFiltro.getText().trim());
-                } catch (SQLException e1) {
-                   System.out.println(e1.getMessage());
-                }
-                String linhas[][] = new String[oListaPessoa.size()][4];
+               
+                oListaPessoa = usuario.consultarUsuarioNome(campoFiltro.getText().trim());
+                
+                String linhas[][] = new String[oListaPessoa.size()][5];
 
                 int i = 0;
                 for (EUsuario usurio : oListaPessoa) {
@@ -283,19 +286,19 @@ public class Usuario {
 
                 JTable tabela = new JTable(linhas, colunas);
                 JScrollPane scroll = new JScrollPane();
-                scroll.setBounds(20, 270, 510, 120);
+                scroll.setBounds(30, 270, 515, 220);
                 scroll.setViewportView(tabela);
                 janela.add(scroll);
-
+        
             }
         });
 
-        oJButtonGerarArquivo.addMouseListener(new MouseAdapter() {
+        botaoArquivo.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                ArrayList<EPessoa> oListaPessoa = new ArrayList<>();
+                ArrayList<EUsuario> oListaPessoa = new ArrayList<>();
                 PPessoa oPPessoa = new PPessoa();
 
                 try {
@@ -318,7 +321,7 @@ public class Usuario {
 
         
         
-        
+        */
         
         
     }
