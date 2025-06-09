@@ -338,11 +338,10 @@ public class Usuario {
 
             }
         });
-
         
         
 
-        janela.setEnabled(true);
+        janela.setVisible(true);
 
     }
 
