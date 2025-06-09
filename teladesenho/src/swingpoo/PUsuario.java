@@ -163,15 +163,14 @@ public class PUsuario {
 
         try {
 
-            String SQL = "update usuarios set usuarios_nome = ?, usuarios_sexo = ?, usuarios_cpf = ?, usuarios_endereco = ?, usuarios_nascimento = ? where usuarios_cpf = ?";
+            String SQL = "update usuarios set usuarios_nome = ?, usuarios_sexo = ?,  usuarios_endereco = ?, usuarios_nascimento = ? where usuarios_cpf = ?";
             try (PreparedStatement pstm = conn.prepareStatement(SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
                 pstm.setString(1, nome.toUpperCase());
                 pstm.setString(2, sexo.toUpperCase());
-                pstm.setString(3, cpf.toUpperCase());
-                pstm.setString(4, endereco.toUpperCase());
-                pstm.setString(5, DataNasc.toUpperCase());
-                pstm.setString(6, cpf.toUpperCase());
+                pstm.setString(3, endereco.toUpperCase());
+                pstm.setString(4, DataNasc.toUpperCase());
+                pstm.setString(5, cpf.toUpperCase());
                 pstm.executeUpdate();
             }
             resultado = "Alteraçao efetuada com sucesso!";

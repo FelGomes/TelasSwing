@@ -244,15 +244,15 @@ public class Usuario {
                 PUsuario usuario = new PUsuario();
                 
                 try {
-                    if(campoUsuario.getText().trim().equalsIgnoreCase("") || ojComboBox.getSelectedIndex() == 0 || campoCPF.getText().trim().equalsIgnoreCase("") || campoEndereco.getText().trim().equalsIgnoreCase("")
-                    ||campoData.getText().trim().equalsIgnoreCase("")){
+                    if(campoUsuario.getText().trim().equalsIgnoreCase("") || ojComboBox.getSelectedIndex() == 0 || campoCPF.getText().trim().equalsIgnoreCase("")|| campoEndereco.getText().trim().equalsIgnoreCase("")
+                    ||campoData.getText().trim().equals("")){
                         JOptionPane.showMessageDialog(null, "Preencha todos os dados!");
 
                         return;
                     }
                     
                     if(!campoCPF.getText().equalsIgnoreCase("") && campoCPF.getText() != null){
-                        String alteracao = usuario.alterarUsuario(campoUsuario.getText(),ojComboBox.getSelectedItem().toString(), campoCPF.getText(), campoEndereco.getText(),campoEndereco.getText());
+                        String alteracao = usuario.alterarUsuario(campoUsuario.getText(),ojComboBox.getSelectedItem().toString(), campoCPF.getText(), campoEndereco.getText(),campoData.getText());
                         JOptionPane.showMessageDialog(null, alteracao);
                         janela.dispose();
                         Usuario.montarTelaUsuario();
