@@ -24,140 +24,129 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 import java.sql.SQLException;
 import java.sql.SQLException;
+
 /**
  *
  * @author felipe
  */
-public class Usuario {  
-    
-    
+public class Usuario {
+
     public static void montarTelaUsuario() throws IOException {
-        
-        
+
         JFrame janela = new JFrame("INSERIR USUARIO");
-        janela.setBounds(200,150,600,550);
+        janela.setBounds(200, 150, 600, 550);
         janela.setLayout(null);
-        
-        
-        
+
         JLabel nomeUsuario = new JLabel("NOME:");
         nomeUsuario.setBounds(5, 20, 60, 25);
         nomeUsuario.setHorizontalAlignment(JLabel.RIGHT);
         janela.add(nomeUsuario);
-        
-        
+
         JTextField campoUsuario = new JTextField();
         campoUsuario.setBounds(20, 45, 250, 25);
         campoUsuario.setLayout(null);
         janela.add(campoUsuario);
-        
 
         JLabel nomeEndereco = new JLabel("ENDERECO:");
         nomeEndereco.setBounds(5, 80, 80, 25);
         nomeEndereco.setHorizontalAlignment(JLabel.RIGHT);
         janela.add(nomeEndereco);
-        
-        
+
         JTextField campoEndereco = new JTextField();
         campoEndereco.setBounds(20, 108, 250, 25);
         campoEndereco.setLayout(null);
         janela.add(campoEndereco);
-        
-        
+
         JLabel nomeCPF = new JLabel("CPF:");
         nomeCPF.setBounds(310, 20, 60, 25);
         nomeCPF.setHorizontalAlignment(JLabel.RIGHT);
         janela.add(nomeCPF);
-        
+
         JTextField campoCPF = new JFormattedTextField(mascaraCPF("###.###.###-##"));
-        campoCPF.setBounds(340, 45, 250,25);
+        campoCPF.setBounds(340, 45, 250, 25);
         campoCPF.setLayout(null);
         janela.add(campoCPF);
-                
-        
-        JLabel campoSexo =  new JLabel("SEXO:");
+
+        JLabel campoSexo = new JLabel("SEXO:");
         campoSexo.setBounds(315, 80, 60, 25);
         campoSexo.setHorizontalAlignment(JLabel.RIGHT);
         janela.add(campoSexo);
-        
+
         JComboBox<String> ojComboBox = new JComboBox<>();
         ojComboBox.setBounds(338, 108, 120, 25);
         ojComboBox.addItem("-SELECIONE-");
         ojComboBox.addItem("M");
         ojComboBox.addItem("F");
         janela.add(ojComboBox);
-        
+
         JLabel nomeData = new JLabel("DAT.NASC");
         nomeData.setBounds(20, 140, 60, 25);
         nomeData.setHorizontalAlignment(JLabel.RIGHT);
         janela.add(nomeData);
-        
-        
+
         JTextField campoData = new JFormattedTextField(mascaraData("##/##/####"));
         campoData.setBounds(20, 170, 100, 25);
         campoData.setLayout(null);
         janela.add(campoData);
-        
+
         // botoes // 
         JButton botaoSalvar = new JButton("SAVE");
         botaoSalvar.setBounds(350, 170, 80, 25);
         janela.add(botaoSalvar);
-        
+
         JButton botaoCancelar = new JButton("CANCEL");
         botaoCancelar.setBounds(450, 170, 100, 25);
         janela.add(botaoCancelar);
-        
+
         JButton botaoAlterar = new JButton("ALTER");
         botaoAlterar.setBounds(350, 205, 80, 25);
         botaoAlterar.setEnabled(false);
         janela.add(botaoAlterar);
-        
+
         JButton botaoDeletar = new JButton("DEL");
         botaoDeletar.setBounds(450, 205, 100, 25);
         botaoDeletar.setEnabled(false);
         janela.add(botaoDeletar);
-        
+
         JButton botaoFiltrar = new JButton("Filtrar");
         botaoFiltrar.setBounds(350, 240, 80, 25);
         janela.add(botaoFiltrar);
-        
-        
+
         JButton botaoArquivo = new JButton("GER.ARQ");
         botaoArquivo.setBounds(450, 240, 100, 25);
         janela.add(botaoArquivo);
-        
+
         String[] colunas = new String[]{"Nome", "Sexo", "CPF", "Endereco", "Nascimento"};
         ArrayList<EUsuario> oListaUsuario = new ArrayList<>();
         PUsuario ppUsuarios = new PUsuario();
-       
+
         try {
             oListaUsuario = ppUsuarios.consultarUsuario();
-        } catch(SQLException e1){
+        } catch (SQLException e1) {
             System.out.println(e1.getMessage());
         }
-        
+
         String linhas[][] = new String[oListaUsuario.size()][5];
-        
+
         int i = 0;
-        
-        for(EUsuario usu: oListaUsuario){
-            
+
+        for (EUsuario usu : oListaUsuario) {
+
             linhas[i][0] = usu.getNome();
             linhas[i][1] = usu.getSexo();
             linhas[i][2] = usu.getCpf();
             linhas[i][3] = usu.getEndereco();
             linhas[i][4] = usu.getDataNasc();
-            
+
             i++;
-            
+
         }
-        
+
         JLabel nomeFiltro = new JLabel("FILTRO:");
         nomeFiltro.setBounds(10, 205, 60, 25);
         nomeFiltro.setHorizontalAlignment(JLabel.RIGHT);
         janela.add(nomeFiltro);
-        
-        
+
         JTextField campoFiltro = new JTextField();
         campoFiltro.setBounds(20, 230, 250, 25);
         campoFiltro.setLayout(null);
@@ -166,22 +155,20 @@ public class Usuario {
         /// tabela
         JTable tabela = new JTable(linhas, colunas);
         JScrollPane scroll = new JScrollPane();
-        scroll.setBounds(30,270,515,220);
+        scroll.setBounds(30, 270, 515, 220);
         scroll.setViewportView(tabela);
-        janela.add(scroll); 
-        
-        
-         botaoSalvar.addMouseListener(new MouseAdapter() {
+        janela.add(scroll);
+
+        botaoSalvar.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
 
                 if (campoUsuario.getText().trim().equalsIgnoreCase("")
-                        ||ojComboBox.getSelectedIndex() == 0
-                        ||campoCPF.getText().trim().equalsIgnoreCase("")
-                        ||campoEndereco.getText().trim().equalsIgnoreCase("")
-                        ||campoData.getText().trim().equalsIgnoreCase("")){
-                         
+                        || ojComboBox.getSelectedIndex() == 0
+                        || campoCPF.getText().trim().equalsIgnoreCase("")
+                        || campoEndereco.getText().trim().equalsIgnoreCase("")
+                        || campoData.getText().trim().equalsIgnoreCase("")) {
 
                     JOptionPane.showMessageDialog(null, "Preencha todos os dados!");
 
@@ -190,8 +177,7 @@ public class Usuario {
                 }
 
                 PUsuario usu = new PUsuario();
-                String inclusao = usu.incluirUsuario(campoUsuario.getText(), ojComboBox.getSelectedItem().toString(), campoCPF.getText(), campoEndereco.getText(),  campoData.getText());
-                                                    
+                String inclusao = usu.incluirUsuario(campoUsuario.getText(), ojComboBox.getSelectedItem().toString(), campoCPF.getText(), campoEndereco.getText(), campoData.getText());
 
                 JOptionPane.showMessageDialog(null, inclusao);
 
@@ -204,11 +190,9 @@ public class Usuario {
 
             }
         });
-         
-         
-         // arrumar essa sintaxe para aparecer na tela
-         
-         tabela.addMouseListener(new MouseAdapter() {
+
+        // arrumar essa sintaxe para aparecer na tela
+        tabela.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -219,7 +203,6 @@ public class Usuario {
                 campoEndereco.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString()); // Endereço
                 campoData.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString()); // Nascimento
 
-
                 botaoAlterar.setEnabled(true);
                 botaoDeletar.setEnabled(true);
 
@@ -227,7 +210,7 @@ public class Usuario {
 
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        
+
                         PUsuario usuario = new PUsuario();
 
                         try {
@@ -236,11 +219,10 @@ public class Usuario {
                                 JOptionPane.showMessageDialog(null, exclusao);
                                 janela.dispose();
                                 Usuario.montarTelaUsuario();
-                                
 
                             } else {
                                 JOptionPane.showMessageDialog(null, "Selecione uma pessoa!");
-                                
+
                             }
 
                         } catch (IOException e1) {
@@ -254,11 +236,10 @@ public class Usuario {
 
             }
         });
-        
+
         janela.setVisible(true);
-        
-        
-         botaoFiltrar.addMouseListener(new MouseAdapter() {
+
+        botaoFiltrar.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -266,9 +247,8 @@ public class Usuario {
                 ArrayList<EUsuario> oListaPessoa = new ArrayList<>();
                 PUsuario usuario = new PUsuario();
 
-               
                 oListaPessoa = usuario.consultarUsuarioNome(campoFiltro.getText().trim());
-                
+
                 String linhas[][] = new String[oListaPessoa.size()][5];
 
                 int i = 0;
@@ -289,7 +269,7 @@ public class Usuario {
                 scroll.setBounds(30, 270, 515, 220);
                 scroll.setViewportView(tabela);
                 janela.add(scroll);
-        
+
             }
         });
 
@@ -298,21 +278,32 @@ public class Usuario {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                ArrayList<EUsuario> oListaPessoa = new ArrayList<>();
-                PPessoa oPPessoa = new PPessoa();
+                ArrayList<EUsuario> listaUsu = new ArrayList<>();
+                PUsuario usuario = new PUsuario();
+
+                listaUsu = usuario.consultarUsuarioNome(campoUsuario.getText().trim());
 
                 try {
-                    oListaPessoa = oPPessoa.consultarPessoaPorNome(oJTextFieldFiltroNome.getText().trim());
+                    Arquivo.gerarArquivoTabela("/home/felipe/Documentos/Usuario.txt", listaUsu);
+                    JOptionPane.showMessageDialog(null, "Arquivo gerado com sucesso!");
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    System.out.println(e1.getMessage());
+                }
 
-                    try {
-                        Arquivo.gerarArquivoTabela("/home/andre/Documentos/Gerado.txt", oListaPessoa);
-                        JOptionPane.showMessageDialog(null, "Arquivo gerado com sucesso!");
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        System.out.println(e1.getMessage());
-                    }
+            }
+        });
+        
+        botaoCancelar.addMouseListener(new MouseAdapter() {
 
-                } catch (SQLException e1) {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                try {
+                    janela.dispose();
+                    montarTelaUsuario();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
                     System.out.println(e1.getMessage());
                 }
 
@@ -321,48 +312,43 @@ public class Usuario {
 
         
         
-        */
-        
-        
-    }
-    
-    public static MaskFormatter mascaraCPF(String mascara){
-           
-           MaskFormatter F_Mascara = new MaskFormatter();
-           
-           try {
-               F_Mascara.setMask(mascara); // atribui a mascaraa
-               F_Mascara.setPlaceholder("000.000.000-00"); // caracter para preenchimento e os numeros
-               
-           } catch (ParseException excecao) {
-               System.out.println(excecao.getMessage());
-               
-           }
-           
-           return F_Mascara;
-           
-    }  
-    
-    public static MaskFormatter mascaraData(String mascara){
-           
-           MaskFormatter F_Mascara = new MaskFormatter();
-           
-           try {
-               F_Mascara.setMask(mascara); // atribui a mascaraa
-               F_Mascara.setPlaceholderCharacter(' '); // caracter para preenchimento e os numeros
-               
-           } catch (ParseException excecao) {
-               System.out.println(excecao.getMessage());
-               
-           }
-           
-           return F_Mascara;
-           
-       }  
 
-    
-    
-    
-   
-    
+        janela.setEnabled(true);
+
+    }
+
+    public static MaskFormatter mascaraCPF(String mascara) {
+
+        MaskFormatter F_Mascara = new MaskFormatter();
+
+        try {
+            F_Mascara.setMask(mascara); // atribui a mascaraa
+            F_Mascara.setPlaceholder("000.000.000-00"); // caracter para preenchimento e os numeros
+
+        } catch (ParseException excecao) {
+            System.out.println(excecao.getMessage());
+
+        }
+
+        return F_Mascara;
+
+    }
+
+    public static MaskFormatter mascaraData(String mascara) {
+
+        MaskFormatter F_Mascara = new MaskFormatter();
+
+        try {
+            F_Mascara.setMask(mascara); // atribui a mascaraa
+            F_Mascara.setPlaceholderCharacter(' '); // caracter para preenchimento e os numeros
+
+        } catch (ParseException excecao) {
+            System.out.println(excecao.getMessage());
+
+        }
+
+        return F_Mascara;
+
+    }
+
 }
